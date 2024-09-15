@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choose Application</title>
     <style>
-        /* Dark theme styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #1e1e1e;
@@ -42,6 +41,10 @@
             color: red;
             margin-top: 20px;
         }
+        .go-back {
+            background-color: #444;
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +53,7 @@
         <button id="swatButton" onclick="goToApplication('swat')">SWAT Applications</button>
         <button id="hqButton" onclick="goToApplication('hq')">Headquarter Applications</button>
         <div id="statusMessage" class="status"></div>
+        <button onclick="window.location.href='index.html'" class="go-back">Go Back</button>
     </div>
 
     <script>
