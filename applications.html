@@ -73,6 +73,7 @@
             const appOpen = JSON.parse(localStorage.getItem(application + 'Open')) || false;
 
             if (appOpen) {
+                // Redirect to the application form page with the application type as a query parameter
                 window.location.href = `application_form.html?app=${application}`;
             } else {
                 alert(`${application.toUpperCase()} Application is Closed!`);
