@@ -42,9 +42,6 @@
         .open {
             color: green;
         }
-        .message {
-            margin: 20px 0;
-        }
     </style>
 </head>
 <body>
@@ -73,21 +70,12 @@
         }
 
         function applyFor(application) {
-            const swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
-            const hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
+            const appOpen = JSON.parse(localStorage.getItem(application + 'Open')) || false;
 
-            if (application === 'swat') {
-                if (swatOpen) {
-                    window.location.href = 'application_form.html?app=swat';
-                } else {
-                    alert('SWAT Application is Closed!');
-                }
-            } else if (application === 'hq') {
-                if (hqOpen) {
-                    window.location.href = 'application_form.html?app=hq';
-                } else {
-                    alert('Headquarter Application is Closed!');
-                }
+            if (appOpen) {
+                window.location.href = `application_form.html?app=${application}`;
+            } else {
+                alert(`${application.toUpperCase()} Application is Closed!`);
             }
         }
 
