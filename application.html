@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Portal</title>
+    <title>Choose Application</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,103 +12,87 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 600px;
+            margin: 100px auto;
             padding: 20px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
             text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="email"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
         }
         button {
-            display: block;
-            width: 100%;
-            padding: 10px;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin: 10px;
         }
         button:hover {
             background-color: #0056b3;
         }
-        .form-status {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
+        .status {
+            margin: 20px 0;
         }
-        .form-status.success {
-            color: green;
-        }
-        .form-status.error {
+        .closed {
             color: red;
         }
-        .hidden {
-            display: none;
+        .open {
+            color: green;
         }
-        .go-back {
-            margin-top: 20px;
-            background-color: #ccc;
-            color: black;
-            cursor: pointer;
+        .message {
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Application Portal</h1>
-        <div id="applicationForm" class="hidden">
-            <div class="form-group">
-                <label for="robloxUsername">What is your Roblox username?</label>
-                <input type="text" id="robloxUsername" name="robloxUsername" required>
-            </div>
-            <div class="form-group">
-                <label for="discordUsername">What is your Discord username?</label>
-                <input type="text" id="discordUsername" name="discordUsername" required>
-            </div>
-            <!-- Additional form elements here -->
-            <button type="button" onclick="submitApplication()">Submit Application</button>
+        <h1>Choose Application</h1>
+        <div>
+            <button onclick="applyFor('swat')">SWAT Application</button>
+            <div class="status" id="swatStatus">Status: <span id="swatText"></span></div>
         </div>
-        <button id="goBackButton" class="go-back hidden" onclick="goBack()">Go Back</button>
-        <div id="formStatus" class="form-status"></div>
+        <div>
+            <button onclick="applyFor('hq')">Headquarter Application</button>
+            <div class="status" id="hqStatus">Status: <span id="hqText"></span></div>
+        </div>
     </div>
 
     <script>
-        function goBack() {
-            window.location.href = 'index.html';
+        function getStatus() {
+            let swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
+            let hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
+
+            document.getElementById('swatText').textContent = swatOpen ? 'Open' : 'Closed';
+            document.getElementById('swatText').className = swatOpen ? 'open' : 'closed';
+
+            document.getElementById('hqText').textContent = hqOpen ? 'Open' : 'Closed';
+            document.getElementById('hqText').className = hqOpen ? 'open' : 'closed';
         }
 
-        // This simulates loading the form (in real use, you'd check for open/closed status)
-        window.onload = function() {
-            document.getElementById('applicationForm').classList.remove('hidden');
-            document.getElementById('goBackButton').classList.remove('hidden');
-        };
+        function applyFor(application) {
+            const swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
+            const hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
 
-        function submitApplication() {
-            // Submission logic (omitted for brevity)
-            alert('Application submitted!');
+            if (application === 'swat') {
+                if (swatOpen) {
+                    window.location.href = 'application_form.html?app=swat';
+                } else {
+                    alert('SWAT Application is Closed!');
+                }
+            } else if (application === 'hq') {
+                if (hqOpen) {
+                    window.location.href = 'application_form.html?app=hq';
+                } else {
+                    alert('Headquarter Application is Closed!');
+                }
+            }
         }
+
+        // Update status on page load
+        getStatus();
     </script>
 </body>
 </html>
