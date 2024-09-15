@@ -31,7 +31,7 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"], textarea {
+        input[type="text"], input[type="email"], textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -52,12 +52,6 @@
         button:hover {
             background-color: #0056b3;
         }
-        .go-back {
-            margin-top: 20px;
-            background-color: #ccc;
-            color: black;
-            cursor: pointer;
-        }
         .form-status {
             display: none;
             text-align: center;
@@ -70,18 +64,23 @@
         .form-status.error {
             color: red;
         }
+        .go-back {
+            background-color: #ccc;
+            color: black;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="formTitle">Application Form</h1>
+        <h1>Application Form</h1>
         <form id="applicationForm">
             <div class="form-group">
-                <label for="robloxUsername">Roblox Username</label>
+                <label for="robloxUsername">What is your Roblox username?</label>
                 <input type="text" id="robloxUsername" name="robloxUsername" required>
             </div>
             <div class="form-group">
-                <label for="discordUsername">Discord Username</label>
+                <label for="discordUsername">What is your Discord username?</label>
                 <input type="text" id="discordUsername" name="discordUsername" required>
             </div>
             <div class="form-group">
@@ -98,25 +97,15 @@
                 <input type="radio" id="ageNo" name="age" value="No" required> <label for="ageNo">No</label>
             </div>
             <button type="button" onclick="submitApplication()">Submit Application</button>
-            <button class="go-back" onclick="goBack()">Go Back</button>
+            <button type="button" class="go-back" onclick="goBack()">Go Back</button>
         </form>
         <div id="formStatus" class="form-status"></div>
     </div>
 
     <script>
-        function getAppName() {
+        function getApplicationType() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('app');
-        }
-
-        function getStatus() {
-            const appName = getAppName();
-            const openStatus = JSON.parse(localStorage.getItem(appName + 'Open')) || false;
-            
-            if (!openStatus) {
-                alert('Application Closed!');
-                window.location.href = 'applications.html';
-            }
         }
 
         function goBack() {
@@ -126,13 +115,14 @@
         async function submitApplication() {
             const form = document.getElementById('applicationForm');
             const statusDiv = document.getElementById('formStatus');
+            const appType = getApplicationType();
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                
+
                 // Webhook URL
-                const webhookURL = 'https://discord.com/api/webhooks/YOUR_WEBHOOK_URL';
+                const webhookURL = 'https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md';
 
                 try {
                     const response = await fetch(webhookURL, {
@@ -141,7 +131,7 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            content: `**${getAppName().toUpperCase()} Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
+                            content: `**${appType.toUpperCase()} Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
                         })
                     });
 
@@ -165,9 +155,6 @@
                 statusDiv.style.display = 'block';
             }
         }
-
-        // Check application status on page load
-        getStatus();
     </script>
 </body>
 </html>
