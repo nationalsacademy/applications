@@ -85,6 +85,7 @@
             status[type] = status[type] === 'closed' ? 'open' : 'closed';
             localStorage.setItem('applicationsStatus', JSON.stringify(status));
 
+            // Update the UI with the new status
             document.getElementById(`${type}Status`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
             document.getElementById(`toggle${type.charAt(0).toUpperCase() + type.slice(1)}`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
         }
