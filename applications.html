@@ -38,41 +38,52 @@
             background-color: #0056b3;
         }
         .status {
-            color: red;
-            margin-top: 20px;
-        }
-        .go-back {
-            background-color: #444;
-            color: #e0e0e0;
+            margin: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <button id="swatButton">SWAT Applications</button>
-        <button id="hqButton">Headquarter Applications</button>
-        <div id="statusMessage" class="status"></div>
-        <button onclick="window.location.href='index.html'" class="go-back">Go Back</button>
+        <div class="status">
+            <p id="swatStatus">SWAT Application: Checking...</p>
+            <p id="hqStatus">HQ Application: Checking...</p>
+        </div>
+        <button id="swatButton" onclick="navigateToApplication('SWAT')">SWAT Application</button>
+        <button id="hqButton" onclick="navigateToApplication('HQ')">HQ Application</button>
+        <button onclick="window.location.href='index.html'">Go Back</button>
     </div>
 
     <script>
-        function checkStatus(application) {
-            const status = JSON.parse(localStorage.getItem('applicationsStatus')) || { swat: 'closed', hq: 'closed' };
-            return status[application];
-        }
+        function checkApplicationStatus() {
+            const swatStatus = localStorage.getItem('SWATStatus') || 'closed';
+            const hqStatus = localStorage.getItem('HQStatus') || 'closed';
+            
+            document.getElementById('swatStatus').textContent = `SWAT Application: ${swatStatus.charAt(0).toUpperCase() + swatStatus.slice(1)}`;
+            document.getElementById('hqStatus').textContent = `HQ Application: ${hqStatus.charAt(0).toUpperCase() + hqStatus.slice(1)}`;
 
-        function goToApplication(type) {
-            const status = checkStatus(type);
-            if (status === 'open') {
-                window.location.href = 'questions.html';
-            } else {
-                document.getElementById('statusMessage').textContent = `The ${type.charAt(0).toUpperCase() + type.slice(1)} application is currently closed.`;
+            if (swatStatus === 'closed') {
+                document.getElementById('swatButton').disabled = true;
+                document.getElementById('swatButton').style.backgroundColor = '#6c757d';
+            }
+
+            if (hqStatus === 'closed') {
+                document.getElementById('hqButton').disabled = true;
+                document.getElementById('hqButton').style.backgroundColor = '#6c757d';
             }
         }
 
-        document.getElementById('swatButton').addEventListener('click', () => goToApplication('swat'));
-        document.getElementById('hqButton').addEventListener('click', () => goToApplication('hq'));
+        function navigateToApplication(type) {
+            const status = localStorage.getItem(type + 'Status');
+            if (status === 'open') {
+                window.location.href = 'questions.html?type=' + type;
+            } else {
+                alert(`${type} Application is closed`);
+            }
+        }
+
+        checkApplicationStatus();
     </script>
 </body>
 </html>
