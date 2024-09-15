@@ -50,8 +50,8 @@
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <button id="swatButton" onclick="goToApplication('swat')">SWAT Applications</button>
-        <button id="hqButton" onclick="goToApplication('hq')">Headquarter Applications</button>
+        <button id="swatButton">SWAT Applications</button>
+        <button id="hqButton">Headquarter Applications</button>
         <div id="statusMessage" class="status"></div>
         <button onclick="window.location.href='index.html'" class="go-back">Go Back</button>
     </div>
@@ -70,6 +70,9 @@
                 document.getElementById('statusMessage').textContent = `The ${type.charAt(0).toUpperCase() + type.slice(1)} application is currently closed.`;
             }
         }
+
+        document.getElementById('swatButton').addEventListener('click', () => goToApplication('swat'));
+        document.getElementById('hqButton').addEventListener('click', () => goToApplication('hq'));
     </script>
 </body>
 </html>
