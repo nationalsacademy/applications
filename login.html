@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #2c2c2c;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            color: #e0e0e0;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 100%;
+            border-radius: 4px;
+            border: none;
+        }
+        input {
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #007bff;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="window.location.href='index.html'">Go Back</button>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // For demonstration purposes; in real scenarios, use a more secure method
+            if (username && password) {
+                let users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                if (!users.includes(username)) {
+                    users.push(username);
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+                }
+                // Redirect to applications or other page upon successful login
+                window.location.href = 'applications.html';
+            } else {
+                alert('Please enter both username and password.');
+            }
+        }
+    </script>
+</body>
+</html>
