@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choose Application</title>
     <style>
+        /* Dark theme styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #1e1e1e;
@@ -13,8 +14,8 @@
             padding: 0;
         }
         .container {
-            max-width: 600px;
-            margin: 100px auto;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
             background: #2c2c2c;
             border-radius: 8px;
@@ -38,62 +39,33 @@
             background-color: #0056b3;
         }
         .status {
-            margin: 20px 0;
-        }
-        .closed {
-            color: #ff4d4d;
-        }
-        .open {
-            color: #4dff4d;
-        }
-        .go-back {
-            background-color: #444;
+            color: red;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <div>
-            <button onclick="applyFor('swat')">SWAT Application</button>
-            <div class="status" id="swatStatus">Status: <span id="swatText"></span></div>
-        </div>
-        <div>
-            <button onclick="applyFor('hq')">Headquarter Application</button>
-            <div class="status" id="hqStatus">Status: <span id="hqText"></span></div>
-        </div>
-        <button class="go-back" onclick="goBack()">Go Back</button>
+        <button id="swatButton" onclick="goToApplication('swat')">SWAT Applications</button>
+        <button id="hqButton" onclick="goToApplication('hq')">Headquarter Applications</button>
+        <div id="statusMessage" class="status"></div>
     </div>
 
     <script>
-        function getStatus() {
-            let swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
-            let hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
-
-            document.getElementById('swatText').textContent = swatOpen ? 'Open' : 'Closed';
-            document.getElementById('swatText').className = swatOpen ? 'open' : 'closed';
-
-            document.getElementById('hqText').textContent = hqOpen ? 'Open' : 'Closed';
-            document.getElementById('hqText').className = hqOpen ? 'open' : 'closed';
+        function checkStatus(application) {
+            const status = JSON.parse(localStorage.getItem('applicationsStatus')) || { swat: 'closed', hq: 'closed' };
+            return status[application];
         }
 
-        function applyFor(application) {
-            const appOpen = JSON.parse(localStorage.getItem(application + 'Open')) || false;
-
-            if (appOpen) {
-                // Redirect to the application form page with the application type as a query parameter
-                window.location.href = `application_form.html?app=${application}`;
+        function goToApplication(type) {
+            const status = checkStatus(type);
+            if (status === 'open') {
+                window.location.href = 'questions.html';
             } else {
-                alert(`${application.toUpperCase()} Application is Closed!`);
+                document.getElementById('statusMessage').textContent = `The ${type.charAt(0).toUpperCase() + type.slice(1)} application is currently closed.`;
             }
         }
-
-        function goBack() {
-            window.location.href = 'index.html';
-        }
-
-        // Update status on page load
-        getStatus();
     </script>
 </body>
 </html>
