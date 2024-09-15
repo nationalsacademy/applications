@@ -88,42 +88,21 @@
             <button type="submit">Submit Application</button>
         </form>
 
-        <div class="form-status" id="formStatus"></div>
+        <div id="formStatus" class="form-status"></div>
+
         <button onclick="window.location.href='applications.html'">Go Back</button>
     </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const applicationType = urlParams.get('type');
-        const form = document.getElementById('applicationForm');
-        const statusDiv = document.getElementById('formStatus');
+        const type = urlParams.get('type'); // 'swat' or 'hq'
+        
+        document.querySelector('h1').textContent = type === 'swat' ? 'SWAT Application Form' : 'HQ Application Form';
 
-        form.addEventListener('submit', function(event) {
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
-            const robloxUsername = document.getElementById('robloxUsername').value;
-            const discordUsername = document.getElementById('discordUsername').value;
-            const reason = document.getElementById('reason').value;
-
-            if (robloxUsername && discordUsername && reason) {
-                const applicationData = {
-                    type: applicationType,
-                    robloxUsername: robloxUsername,
-                    discordUsername: discordUsername,
-                    reason: reason
-                };
-
-                // Normally here you'd send the data to a server. For now, we'll simulate success.
-                localStorage.setItem(applicationType + 'Application', JSON.stringify(applicationData));
-                
-                statusDiv.textContent = `Your ${applicationType} application has been submitted successfully!`;
-                statusDiv.className = 'form-status success';
-                statusDiv.style.display = 'block';
-            } else {
-                statusDiv.textContent = 'Please fill in all fields.';
-                statusDiv.className = 'form-status error';
-                statusDiv.style.display = 'block';
-            }
+            alert("Application submitted!");
+            // Here, you'd process the form and send data (e.g., via a webhook)
         });
     </script>
 </body>
