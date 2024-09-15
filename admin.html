@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control</title>
+    <title>Admin Control Panel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,8 +13,8 @@
             padding: 0;
         }
         .container {
-            max-width: 400px;
-            margin: 100px auto;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
             background: #2c2c2c;
             border-radius: 8px;
@@ -37,51 +37,17 @@
         button:hover {
             background-color: #0056b3;
         }
-        .status {
-            margin: 10px 0;
-        }
         .go-back {
             background-color: #444;
+            color: #e0e0e0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Control Panel</h1>
-        <div class="status">
-            <h2>SWAT Application</h2>
-            <button onclick="toggleStatus('swat')">Toggle SWAT Application Status</button>
-            <p>Status: <span id="swatStatus"></span></p>
-        </div>
-        <div class="status">
-            <h2>Headquarter Application</h2>
-            <button onclick="toggleStatus('hq')">Toggle HQ Application Status</button>
-            <p>Status: <span id="hqStatus"></span></p>
-        </div>
-        <button class="go-back" onclick="goBack()">Go Back</button>
+        <button onclick="window.location.href='https://nationalsacademy.github.io/applications/'" class="go-back">Go Back</button>
+        <button onclick="window.location.href='applications.html'">Go to Applications</button>
     </div>
-
-    <script>
-        function getStatus() {
-            let swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
-            let hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
-
-            document.getElementById('swatStatus').textContent = swatOpen ? 'Open' : 'Closed';
-            document.getElementById('hqStatus').textContent = hqOpen ? 'Open' : 'Closed';
-        }
-
-        function toggleStatus(app) {
-            let currentStatus = JSON.parse(localStorage.getItem(app + 'Open')) || false;
-            localStorage.setItem(app + 'Open', !currentStatus);
-            getStatus();
-        }
-
-        function goBack() {
-            window.location.href = 'index.html';
-        }
-
-        // Update status on page load
-        getStatus();
-    </script>
 </body>
 </html>
