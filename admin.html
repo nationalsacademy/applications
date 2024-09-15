@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control Panel</title>
+    <title>Admin Control</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,20 +12,16 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 400px;
+            margin: 100px auto;
             padding: 20px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
         button {
-            padding: 10px 20px;
+            padding: 10px;
             background-color: #007bff;
             color: white;
             border: none;
@@ -38,59 +34,54 @@
             background-color: #0056b3;
         }
         .status {
-            margin-top: 20px;
+            margin: 10px 0;
+        }
+        .status span {
             font-weight: bold;
         }
-        .open {
-            color: green;
-        }
-        .closed {
-            color: red;
+        .go-back {
+            background-color: #ccc;
+            color: black;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Control Panel</h1>
-        <div>
-            <button onclick="toggleStatus('swat')">Toggle SWAT Applications</button>
-            <button onclick="toggleStatus('hq')">Toggle Headquarter Applications</button>
+        <div class="status">
+            <h2>SWAT Application</h2>
+            <button onclick="toggleStatus('swat')">Toggle SWAT Application Status</button>
+            <p>Status: <span id="swatStatus"></span></p>
         </div>
-        <div class="status" id="swatStatus">SWAT Applications: <span class="closed">Closed</span></div>
-        <div class="status" id="hqStatus">Headquarter Applications: <span class="closed">Closed</span></div>
+        <div class="status">
+            <h2>Headquarter Application</h2>
+            <button onclick="toggleStatus('hq')">Toggle HQ Application Status</button>
+            <p>Status: <span id="hqStatus"></span></p>
+        </div>
+        <button class="go-back" onclick="goBack()">Go Back</button>
     </div>
 
     <script>
-        // Initial application statuses
-        let swatOpen = false;
-        let hqOpen = false;
+        function getStatus() {
+            let swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
+            let hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
 
-        function toggleStatus(application) {
-            if (application === 'swat') {
-                swatOpen = !swatOpen;
-                updateStatus('swatStatus', swatOpen);
-            } else if (application === 'hq') {
-                hqOpen = !hqOpen;
-                updateStatus('hqStatus', hqOpen);
-            }
-            // Save status to localStorage (so status remains consistent across pages)
-            localStorage.setItem('swatOpen', swatOpen);
-            localStorage.setItem('hqOpen', hqOpen);
+            document.getElementById('swatStatus').textContent = swatOpen ? 'Open' : 'Closed';
+            document.getElementById('hqStatus').textContent = hqOpen ? 'Open' : 'Closed';
         }
 
-        function updateStatus(elementId, isOpen) {
-            const statusElement = document.getElementById(elementId);
-            statusElement.innerHTML = isOpen ? 'Open' : 'Closed';
-            statusElement.className = isOpen ? 'open' : 'closed';
+        function toggleStatus(app) {
+            let currentStatus = JSON.parse(localStorage.getItem(app + 'Open')) || false;
+            localStorage.setItem(app + 'Open', !currentStatus);
+            getStatus();
         }
 
-        // On page load, restore status from localStorage
-        window.onload = function() {
-            swatOpen = JSON.parse(localStorage.getItem('swatOpen')) || false;
-            hqOpen = JSON.parse(localStorage.getItem('hqOpen')) || false;
-            updateStatus('swatStatus', swatOpen);
-            updateStatus('hqStatus', hqOpen);
-        };
+        function goBack() {
+            window.location.href = 'login.html';
+        }
+
+        // Update status on page load
+        getStatus();
     </script>
 </body>
 </html>
