@@ -79,10 +79,10 @@
             applicationsStatus[type] = applicationsStatus[type] === 'closed' ? 'open' : 'closed';
             document.getElementById(`${type}Status`).textContent = applicationsStatus[type].charAt(0).toUpperCase() + applicationsStatus[type].slice(1);
             document.getElementById(`toggle${type.charAt(0).toUpperCase() + type.slice(1)}`).textContent = applicationsStatus[type].charAt(0).toUpperCase() + applicationsStatus[type].slice(1);
+            saveStatus(); // Save status to local storage
         }
 
-        // Example of saving the application status to local storage (for demo purposes)
-        // In a real application, you would handle this with a backend service.
+        // Function to save status to local storage
         function saveStatus() {
             localStorage.setItem('applicationsStatus', JSON.stringify(applicationsStatus));
         }
