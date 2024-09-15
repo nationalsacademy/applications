@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Selection</title>
+    <title>Application Portal</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,15 +24,20 @@
         h1 {
             color: #e0e0e0;
         }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 100%;
+            border-radius: 4px;
+            border: none;
+        }
+        input {
+            border: 1px solid #ddd;
+        }
         button {
-            padding: 10px 20px;
             background-color: #007bff;
             color: #e0e0e0;
-            border: none;
-            border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -40,10 +45,36 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Application Portal</h1>
-        <button onclick="window.location.href='login.html'">Login</button>
+    <div class="container" id="loginContainer">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="window.location.href='applications.html'">Go to Applications</button>
+    </div>
+
+    <div class="container" id="appContainer" style="display: none;">
+        <h1>Application Portal</h1>
         <button onclick="window.location.href='applications.html'">Choose Application</button>
     </div>
+
+    <script>
+        const validUsers = {
+            'Zembuso': 'adminlogin', 
+            // Add other users here if needed
+        };
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (validUsers[username] === password) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+            } else {
+                alert('Invalid username or password.');
+            }
+        }
+    </script>
 </body>
 </html>
