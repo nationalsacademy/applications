@@ -37,42 +37,29 @@
         button:hover {
             background-color: #0056b3;
         }
-        .status {
-            color: red;
-            margin-top: 20px;
-        }
-        .go-back {
-            background-color: #444;
-            color: #e0e0e0;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <button id="swatButton">SWAT Applications</button>
-        <button id="hqButton">Headquarter Applications</button>
-        <div id="statusMessage" class="status"></div>
-        <button onclick="window.location.href='index.html'" class="go-back">Go Back</button>
+        <button onclick="navigateToApplication('SWAT')">SWAT Application</button>
+        <button onclick="navigateToApplication('HQ')">HQ Application</button>
+        <button onclick="window.location.href='index.html'">Go Back</button>
     </div>
 
     <script>
-        function checkStatus(application) {
-            const status = JSON.parse(localStorage.getItem('applicationsStatus')) || { swat: 'closed', hq: 'closed' };
-            return status[application];
-        }
+        const appStatus = {
+            'SWAT': 'open',
+            'HQ': 'closed'
+        };
 
-        function goToApplication(type) {
-            const status = checkStatus(type);
-            if (status === 'open') {
-                window.location.href = 'questions.html';
+        function navigateToApplication(type) {
+            if (appStatus[type] === 'open') {
+                window.location.href = 'questions.html?type=' + type;
             } else {
-                document.getElementById('statusMessage').textContent = `The ${type.charAt(0).toUpperCase() + type.slice(1)} application is currently closed.`;
+                alert('The ' + type + ' application is currently closed.');
             }
         }
-
-        document.getElementById('swatButton').addEventListener('click', () => goToApplication('swat'));
-        document.getElementById('hqButton').addEventListener('click', () => goToApplication('hq'));
     </script>
 </body>
 </html>
