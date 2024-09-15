@@ -37,8 +37,33 @@
         button:hover {
             background-color: #0056b3;
         }
-        .go-back {
-            background-color: #444;
+        .login-container {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            margin-top: 10px;
+            background: #333;
+            color: #e0e0e0;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            color: red;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -46,7 +71,35 @@
     <div class="container">
         <h1>Welcome to the Application Portal</h1>
         <button onclick="window.location.href='applications.html'">Go to Applications</button>
-        <button onclick="window.location.href='admin.html'">Admin Control Panel</button>
+        <button onclick="showLogin()">Admin Login</button>
+
+        <div id="loginContainer" class="login-container" style="display: none;">
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+            <div id="loginStatus" class="status"></div>
+        </div>
     </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'Zembuso' && password === 'adminlogin') {
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('loginStatus').textContent = 'Invalid username or password.';
+            }
+        });
+    </script>
 </body>
 </html>
