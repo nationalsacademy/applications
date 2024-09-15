@@ -37,23 +37,63 @@
         button:hover {
             background-color: #0056b3;
         }
+        .go-back {
+            background-color: #444;
+            color: #e0e0e0;
+        }
+        .status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Control Panel</h1>
-        <button onclick="setApplicationStatus('SWAT', 'open')">Open SWAT Application</button>
-        <button onclick="setApplicationStatus('SWAT', 'closed')">Close SWAT Application</button>
-        <button onclick="setApplicationStatus('HQ', 'open')">Open HQ Application</button>
-        <button onclick="setApplicationStatus('HQ', 'closed')">Close HQ Application</button>
-        <button onclick="window.location.href='index.html'">Go Back</button>
+        <button onclick="window.location.href='https://nationalsacademy.github.io/applications/'" class="go-back">Go Back</button>
+
+        <h2>Manage Applications</h2>
+        <div id="applicationControls">
+            <div>
+                <h3>SWAT Applications</h3>
+                <button id="toggleSwat">Open</button>
+                <div id="swatStatus" class="status">Closed</div>
+            </div>
+            <div>
+                <h3>Headquarter Applications</h3>
+                <button id="toggleHq">Open</button>
+                <div id="hqStatus" class="status">Closed</div>
+            </div>
+        </div>
     </div>
 
     <script>
-        function setApplicationStatus(type, status) {
-            localStorage.setItem(type + 'Status', status);
-            alert(type + ' application is now ' + status);
+        // Function to load application status from local storage
+        function loadStatus() {
+            const savedStatus = JSON.parse(localStorage.getItem('applicationsStatus'));
+            const status = savedStatus || { swat: 'closed', hq: 'closed' };
+
+            document.getElementById('swatStatus').textContent = status.swat.charAt(0).toUpperCase() + status.swat.slice(1);
+            document.getElementById('hqStatus').textContent = status.hq.charAt(0).toUpperCase() + status.hq.slice(1);
+            document.getElementById('toggleSwat').textContent = status.swat.charAt(0).toUpperCase() + status.swat.slice(1);
+            document.getElementById('toggleHq').textContent = status.hq.charAt(0).toUpperCase() + status.hq.slice(1);
         }
+
+        // Function to toggle application status
+        function toggleApplication(type) {
+            const status = JSON.parse(localStorage.getItem('applicationsStatus')) || { swat: 'closed', hq: 'closed' };
+            status[type] = status[type] === 'closed' ? 'open' : 'closed';
+            localStorage.setItem('applicationsStatus', JSON.stringify(status));
+
+            // Update the UI with the new status
+            document.getElementById(`${type}Status`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
+            document.getElementById(`toggle${type.charAt(0).toUpperCase() + type.slice(1)}`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
+        }
+
+        document.getElementById('toggleSwat').addEventListener('click', () => toggleApplication('swat'));
+        document.getElementById('toggleHq').addEventListener('click', () => toggleApplication('hq'));
+
+        loadStatus(); // Load the status on page load
     </script>
 </body>
 </html>
