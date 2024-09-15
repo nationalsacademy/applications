@@ -80,4 +80,51 @@
             <div class="form-group">
                 <label for="discordUsername">What is your Discord username?</label>
                 <input type="text" id="discordUsername" name="discordUsername" required>
-           
+            </div>
+            <div class="form-group">
+                <label for="reason">Why do you want to apply for this role?</label>
+                <textarea id="reason" name="reason" rows="5" required></textarea>
+            </div>
+            <button type="submit">Submit Application</button>
+        </form>
+
+        <div class="form-status" id="formStatus"></div>
+        <button onclick="window.location.href='applications.html'">Go Back</button>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationType = urlParams.get('type');
+        const form = document.getElementById('applicationForm');
+        const statusDiv = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const robloxUsername = document.getElementById('robloxUsername').value;
+            const discordUsername = document.getElementById('discordUsername').value;
+            const reason = document.getElementById('reason').value;
+
+            if (robloxUsername && discordUsername && reason) {
+                const applicationData = {
+                    type: applicationType,
+                    robloxUsername: robloxUsername,
+                    discordUsername: discordUsername,
+                    reason: reason
+                };
+
+                // Normally here you'd send the data to a server. For now, we'll simulate success.
+                localStorage.setItem(applicationType + 'Application', JSON.stringify(applicationData));
+                
+                statusDiv.textContent = `Your ${applicationType} application has been submitted successfully!`;
+                statusDiv.className = 'form-status success';
+                statusDiv.style.display = 'block';
+            } else {
+                statusDiv.textContent = 'Please fill in all fields.';
+                statusDiv.className = 'form-status error';
+                statusDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
