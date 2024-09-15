@@ -13,87 +13,62 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 400px;
+            margin: 50px auto;
             padding: 20px;
             background: #2c2c2c;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             text-align: center;
-        }
-        h1 {
-            color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             background-color: #007bff;
-            color: #e0e0e0;
             border: none;
+            color: #fff;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
         }
         button:hover {
             background-color: #0056b3;
-        }
-        .go-back {
-            background-color: #444;
-            color: #e0e0e0;
-        }
-        .status {
-            margin-top: 20px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Control Panel</h1>
-        <button onclick="window.location.href='https://nationalsacademy.github.io/applications/'" class="go-back">Go Back</button>
-
-        <h2>Manage Applications</h2>
-        <div id="applicationControls">
-            <div>
-                <h3>SWAT Applications</h3>
-                <button id="toggleSwat">Open</button>
-                <div id="swatStatus" class="status">Closed</div>
-            </div>
-            <div>
-                <h3>Headquarter Applications</h3>
-                <button id="toggleHq">Open</button>
-                <div id="hqStatus" class="status">Closed</div>
-            </div>
-        </div>
+        <button id="toggleSwatBtn">Toggle SWAT Application</button>
+        <button id="toggleHqBtn">Toggle HQ Application</button>
+        <button onclick="window.location.href='index.html'">Go Back to Login</button>
     </div>
 
     <script>
-        // Function to load application status from local storage
-        function loadStatus() {
-            const savedStatus = JSON.parse(localStorage.getItem('applicationsStatus'));
-            const status = savedStatus || { swat: 'closed', hq: 'closed' };
+        const toggleSwatBtn = document.getElementById('toggleSwatBtn');
+        const toggleHqBtn = document.getElementById('toggleHqBtn');
 
-            document.getElementById('swatStatus').textContent = status.swat.charAt(0).toUpperCase() + status.swat.slice(1);
-            document.getElementById('hqStatus').textContent = status.hq.charAt(0).toUpperCase() + status.hq.slice(1);
-            document.getElementById('toggleSwat').textContent = status.swat.charAt(0).toUpperCase() + status.swat.slice(1);
-            document.getElementById('toggleHq').textContent = status.hq.charAt(0).toUpperCase() + status.hq.slice(1);
+        function updateButtonText() {
+            const swatOpen = localStorage.getItem('swatOpen') === 'true';
+            const hqOpen = localStorage.getItem('hqOpen') === 'true';
+            toggleSwatBtn.textContent = `SWAT Application is ${swatOpen ? 'Open' : 'Closed'}`;
+            toggleHqBtn.textContent = `HQ Application is ${hqOpen ? 'Open' : 'Closed'}`;
         }
 
-        // Function to toggle application status
-        function toggleApplication(type) {
-            const status = JSON.parse(localStorage.getItem('applicationsStatus')) || { swat: 'closed', hq: 'closed' };
-            status[type] = status[type] === 'closed' ? 'open' : 'closed';
-            localStorage.setItem('applicationsStatus', JSON.stringify(status));
+        toggleSwatBtn.addEventListener('click', () => {
+            const currentStatus = localStorage.getItem('swatOpen') === 'true';
+            localStorage.setItem('swatOpen', !currentStatus);
+            updateButtonText();
+        });
 
-            // Update the UI with the new status
-            document.getElementById(`${type}Status`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
-            document.getElementById(`toggle${type.charAt(0).toUpperCase() + type.slice(1)}`).textContent = status[type].charAt(0).toUpperCase() + status[type].slice(1);
-        }
+        toggleHqBtn.addEventListener('click', () => {
+            const currentStatus = localStorage.getItem('hqOpen') === 'true';
+            localStorage.setItem('hqOpen', !currentStatus);
+            updateButtonText();
+        });
 
-        document.getElementById('toggleSwat').addEventListener('click', () => toggleApplication('swat'));
-        document.getElementById('toggleHq').addEventListener('click', () => toggleApplication('hq'));
-
-        loadStatus(); // Load the status on page load
+        // Initialize button text on page load
+        updateButtonText();
     </script>
 </body>
 </html>
