@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applications</title>
+    <title>Choose Application</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #1e1e1e;
             color: #e0e0e0;
-            margin: 0;
-            padding: 0;
+            text-align: center;
+            padding-top: 50px;
         }
         .container {
-            max-width: 400px;
-            margin: 50px auto;
+            background-color: #2c2c2c;
             padding: 20px;
-            background: #2c2c2c;
             border-radius: 8px;
-            text-align: center;
+            width: 350px;
+            margin: 0 auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         button {
@@ -27,7 +26,7 @@
             margin: 10px 0;
             background-color: #007bff;
             border: none;
-            color: #fff;
+            color: white;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -39,38 +38,30 @@
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <button id="swatAppBtn">SWAT Application - <span id="swatStatus">Checking...</span></button>
-        <button id="hqAppBtn">HQ Application - <span id="hqStatus">Checking...</span></button>
+        <button id="swatBtn">SWAT Application</button>
+        <button id="hqBtn">HQ Application</button>
         <button onclick="window.location.href='index.html'">Go Back</button>
     </div>
 
     <script>
-        let swatOpen = localStorage.getItem('swatOpen') === 'true';
-        let hqOpen = localStorage.getItem('hqOpen') === 'true';
+        const swatOpen = localStorage.getItem('swatOpen') === 'true';
+        const hqOpen = localStorage.getItem('hqOpen') === 'true';
 
-        const swatStatus = document.getElementById('swatStatus');
-        const hqStatus = document.getElementById('hqStatus');
-        const swatAppBtn = document.getElementById('swatAppBtn');
-        const hqAppBtn = document.getElementById('hqAppBtn');
-
-        swatStatus.textContent = swatOpen ? 'Open' : 'Closed';
-        hqStatus.textContent = hqOpen ? 'Open' : 'Closed';
-
-        swatAppBtn.onclick = function() {
+        document.getElementById('swatBtn').addEventListener('click', () => {
             if (swatOpen) {
                 window.location.href = 'questions.html?type=swat';
             } else {
-                alert('SWAT Application is currently closed.');
+                alert('SWAT Application is closed!');
             }
-        };
+        });
 
-        hqAppBtn.onclick = function() {
+        document.getElementById('hqBtn').addEventListener('click', () => {
             if (hqOpen) {
                 window.location.href = 'questions.html?type=hq';
             } else {
-                alert('HQ Application is currently closed.');
+                alert('HQ Application is closed!');
             }
-        };
+        });
     </script>
 </body>
 </html>
