@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Application</title>
+    <title>Applications</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,77 +13,64 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 400px;
+            margin: 50px auto;
             padding: 20px;
             background: #2c2c2c;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             text-align: center;
-        }
-        h1 {
-            color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             background-color: #007bff;
-            color: #e0e0e0;
             border: none;
+            color: #fff;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
         }
         button:hover {
             background-color: #0056b3;
-        }
-        .status {
-            margin: 10px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Choose Application</h1>
-        <div class="status">
-            <p id="swatStatus">SWAT Application: Checking...</p>
-            <p id="hqStatus">HQ Application: Checking...</p>
-        </div>
-        <button id="swatButton" onclick="navigateToApplication('SWAT')">SWAT Application</button>
-        <button id="hqButton" onclick="navigateToApplication('HQ')">HQ Application</button>
+        <button id="swatAppBtn">SWAT Application - <span id="swatStatus">Checking...</span></button>
+        <button id="hqAppBtn">HQ Application - <span id="hqStatus">Checking...</span></button>
         <button onclick="window.location.href='index.html'">Go Back</button>
     </div>
 
     <script>
-        function checkApplicationStatus() {
-            const swatStatus = localStorage.getItem('SWATStatus') || 'closed';
-            const hqStatus = localStorage.getItem('HQStatus') || 'closed';
-            
-            document.getElementById('swatStatus').textContent = `SWAT Application: ${swatStatus.charAt(0).toUpperCase() + swatStatus.slice(1)}`;
-            document.getElementById('hqStatus').textContent = `HQ Application: ${hqStatus.charAt(0).toUpperCase() + hqStatus.slice(1)}`;
+        let swatOpen = localStorage.getItem('swatOpen') === 'true';
+        let hqOpen = localStorage.getItem('hqOpen') === 'true';
 
-            if (swatStatus === 'closed') {
-                document.getElementById('swatButton').disabled = true;
-                document.getElementById('swatButton').style.backgroundColor = '#6c757d';
-            }
+        const swatStatus = document.getElementById('swatStatus');
+        const hqStatus = document.getElementById('hqStatus');
+        const swatAppBtn = document.getElementById('swatAppBtn');
+        const hqAppBtn = document.getElementById('hqAppBtn');
 
-            if (hqStatus === 'closed') {
-                document.getElementById('hqButton').disabled = true;
-                document.getElementById('hqButton').style.backgroundColor = '#6c757d';
-            }
-        }
+        swatStatus.textContent = swatOpen ? 'Open' : 'Closed';
+        hqStatus.textContent = hqOpen ? 'Open' : 'Closed';
 
-        function navigateToApplication(type) {
-            const status = localStorage.getItem(type + 'Status');
-            if (status === 'open') {
-                window.location.href = 'questions.html?type=' + type;
+        swatAppBtn.onclick = function() {
+            if (swatOpen) {
+                window.location.href = 'questions.html?type=swat';
             } else {
-                alert(`${type} Application is closed`);
+                alert('SWAT Application is currently closed.');
             }
-        }
+        };
 
-        checkApplicationStatus();
+        hqAppBtn.onclick = function() {
+            if (hqOpen) {
+                window.location.href = 'questions.html?type=hq';
+            } else {
+                alert('HQ Application is currently closed.');
+            }
+        };
     </script>
 </body>
 </html>
