@@ -10,62 +10,40 @@
             background-color: #1e1e1e;
             color: #e0e0e0;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #2c2c2c;
             padding: 20px;
-            background: #2c2c2c;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
-        h1 {
-            color: #e0e0e0;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin: 10px 0;
         }
-        input[type="text"], input[type="email"], textarea {
+        input[type="text"], input[type="number"], input[type="email"] {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
-            background: #333;
-            color: #e0e0e0;
+            background-color: #f0f0f0;
+            color: #333;
         }
         button {
-            display: block;
             width: 100%;
             padding: 10px;
             background-color: #007bff;
-            color: white;
             border: none;
+            color: white;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
         }
         button:hover {
             background-color: #0056b3;
-        }
-        .form-status {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        .form-status.success {
-            color: green;
-        }
-        .form-status.error {
-            color: red;
         }
     </style>
 </head>
@@ -73,36 +51,49 @@
     <div class="container">
         <h1>Application Form</h1>
         <form id="applicationForm">
-            <div class="form-group">
-                <label for="robloxUsername">What is your Roblox username?</label>
-                <input type="text" id="robloxUsername" name="robloxUsername" required>
-            </div>
-            <div class="form-group">
-                <label for="discordUsername">What is your Discord username?</label>
-                <input type="text" id="discordUsername" name="discordUsername" required>
-            </div>
-            <div class="form-group">
-                <label for="reason">Why do you want to apply for this role?</label>
-                <textarea id="reason" name="reason" rows="5" required></textarea>
-            </div>
+            <label for="age">Are you 13 years or older?</label>
+            <input type="text" id="age" name="age" placeholder="Yes/No" required>
+            
+            <label for="experience">Describe your experience:</label>
+            <input type="text" id="experience" name="experience" placeholder="Your experience" required>
+            
+            <label for="why">Why do you want to join?</label>
+            <input type="text" id="why" name="why" placeholder="Reason for applying" required>
+
             <button type="submit">Submit Application</button>
         </form>
-
-        <div id="formStatus" class="form-status"></div>
-
-        <button onclick="window.location.href='applications.html'">Go Back</button>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('type'); // 'swat' or 'hq'
-        
-        document.querySelector('h1').textContent = type === 'swat' ? 'SWAT Application Form' : 'HQ Application Form';
+        const form = document.getElementById('applicationForm');
 
-        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            alert("Application submitted!");
-            // Here, you'd process the form and send data (e.g., via a webhook)
+            
+            const formData = new FormData(form);
+            const age = formData.get('age');
+            const experience = formData.get('experience');
+            const why = formData.get('why');
+            const appType = new URLSearchParams(window.location.search).get('type'); 
+
+            const webhookUrl = "https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md";
+
+            const payload = {
+                content: `New ${appType.toUpperCase()} Application Submitted\nAge: ${age}\nExperience: ${experience}\nReason: ${why}`,
+            };
+
+            try {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+                alert("Application submitted successfully!");
+            } catch (error) {
+                alert("There was an error submitting your application.");
+            }
         });
     </script>
 </body>
