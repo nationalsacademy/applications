@@ -1,295 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Application Form</title>
-
+    <title>SWAT Application</title>
     <style>
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            background: white;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         h1 {
             text-align: center;
-            color: #007bff;
+            color: #333;
         }
-
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
-
-        input[type="text"], select, textarea {
+        input[type="text"], input[type="email"], textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-
-        input[type="radio"] {
-            margin-right: 10px;
-        }
-
         button {
-            padding: 10px 20px;
+            display: block;
+            width: 100%;
+            padding: 10px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
-        .progress {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .progress div {
-            width: 100%;
-            height: 5px;
-            background: #e0e0e0;
-            margin-right: 10px;
-        }
-
-        .progress div.active {
-            background: #007bff;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Hide the closed message by default */
-        #closedMessage {
+        .form-status {
             display: none;
             text-align: center;
-            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .form-status.success {
+            color: green;
+        }
+        .form-status.error {
             color: red;
         }
-
     </style>
-
 </head>
-
 <body>
-
     <div class="container">
-
-        <h1>Application Form</h1>
-
-        <!-- Applications closed message -->
-        <div id="closedMessage">
-            Applications are closed.
-        </div>
-
-        <!-- Application form -->
-        <div id="applicationFormWrapper">
-
-            <div class="progress">
-                <div class="progress-step active"></div>
-                <div class="progress-step"></div>
-                <div class="progress-step"></div>
-                <div class="progress-step"></div>
+        <h1>SWAT Application</h1>
+        <form id="applicationForm">
+            <div class="form-group">
+                <label for="robloxUsername">What is your Roblox username?</label>
+                <input type="text" id="robloxUsername" name="robloxUsername" required>
             </div>
-
-            <form id="applicationForm">
-                <!-- Step 1 -->
-                <div class="form-step active">
-                    <div class="form-group">
-                        <label for="robloxUsername">What is your Roblox username?</label>
-                        <input type="text" id="robloxUsername" name="robloxUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="discordUsername">What is your Discord username?</label>
-                        <input type="text" id="discordUsername" name="discordUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="rank">What is your rank?</label>
-                        <select id="rank" name="rank" required>
-                            <option value="Police Officer">Police Officer</option>
-                            <option value="Constable">Constable</option>
-                            <option value="Corporal">Corporal</option>
-                            <option value="Sergeant">Sergeant</option>
-                            <option value="Lieutenant">Lieutenant</option>
-                            <option value="Captain">Captain</option>
-                            <option value="Major">Major</option>
-                            <option value="Commander">Commander</option>
-                            <option value="Superintendent">Superintendent</option>
-                            <option value="Chief Superintendent">Chief Superintendent</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="timezone">What is your timezone?</label>
-                        <input type="text" id="timezone" name="timezone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Are you over 13 years old?</label>
-                        <input type="radio" id="yes" name="age" value="Yes" required> <label for="yes">Yes</label>
-                        <input type="radio" id="no" name="age" value="No" required> <label for="no">No</label>
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="nextStep()">Next</button>
-                    </div>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="form-step">
-                    <div class="form-group">
-                        <label for="reason">Why would you like to join the Training & Discipline Unit?</label>
-                        <textarea id="reason" name="reason" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="goals">What are your goals within the Training & Discipline Unit?</label>
-                        <textarea id="goals" name="goals" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="experiences">What are your past experiences? (list as many as you can)</label>
-                        <textarea id="experiences" name="experiences" rows="4" required></textarea>
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="previousStep()">Back</button>
-                        <button type="button" onclick="nextStep()">Next</button>
-                    </div>
-                </div>
-
-                <!-- Final Step: Submit -->
-                <div class="form-step">
-                    <p>Do you understand that a lack of information will be an immediate denial?</p>
-                    <input type="radio" id="infoYes" name="infoDenial" value="Yes" required>
-                    <label for="infoYes">Yes</label>
-                    <div class="button-group">
-                        <button type="button" onclick="previousStep()">Back</button>
-                        <button type="submit">Submit</button>
-                    </div>
-                </div>
-            </form>
-
-        </div> <!-- End of form wrapper -->
-
-        <script>
-
-            let currentStep = 0;
-            const formSteps = document.querySelectorAll('.form-step');
-            const progressSteps = document.querySelectorAll('.progress-step');
-            const formWrapper = document.getElementById('applicationFormWrapper');
-            const closedMessage = document.getElementById('closedMessage');
-
-            // Toggle this value between true or false to hide/unhide the form
-            let isApplicationClosed = true; // Set to true to hide the form and show the message
-
-            // Function to update the visibility of the form or the closed message
-            function toggleFormVisibility() {
-                if (isApplicationClosed) {
-                    formWrapper.style.display = 'none';
-                    closedMessage.style.display = 'block';
-                } else {
-                    formWrapper.style.display = 'block';
-                    closedMessage.style.display = 'none';
-                }
-            }
-
-            toggleFormVisibility(); // Call the function on page load
-
-            function updateFormStep() {
-                formSteps.forEach((step, index) => {
-                    step.classList.toggle('active', index === currentStep);
-                });
-                progressSteps.forEach((step, index) => {
-                    step.classList.toggle('active', index <= currentStep);
-                });
-            }
-
-            function nextStep() {
-                if (currentStep < formSteps.length - 1) {
-                    currentStep++;
-                    updateFormStep();
-                }
-            }
-
-            function previousStep() {
-                if (currentStep > 0) {
-                    currentStep--;
-                    updateFormStep();
-                }
-            }
-
-            // Submit Form and Send to Webhook
-            const form = document.getElementById('applicationForm');
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const webhookURL = "https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md";
-                const formData = new FormData(form);
-                const formEntries = Object.fromEntries(formData.entries());
-
-                // Format the message to include questions and answers in sentences
-                const messageContent = `
-**New Application Submitted**
-- **Roblox Username**: ${formEntries.robloxUsername}
-- **Discord Username**: ${formEntries.discordUsername}
-- **Rank**: ${formEntries.rank}
-- **Timezone**: ${formEntries.timezone}
-- **Are you over 13 years old?**: ${formEntries.age}
-- **Why would you like to join the Training & Discipline Unit?**: ${formEntries.reason}
-- **What are your goals within the Training & Discipline Unit?**: ${formEntries.goals}
-- **Past experiences**: ${formEntries.experiences}
-                `;
-
-                fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: messageContent
-                    })
-                }).then(() => {
-                    alert("Application submitted successfully!");
-                    form.reset();  // Clear the form after submission
-                    currentStep = 0; // Reset the form to the first step
-                    updateFormStep(); // Update the form display
-                });
-            });
-
-        </script>
-
+            <div class="form-group">
+                <label for="discordUsername">What is your Discord username?</label>
+                <input type="text" id="discordUsername" name="discordUsername" required>
+            </div>
+            <div class="form-group">
+                <label for="reason">Why do you want to join SWAT?</label>
+                <textarea id="reason" name="reason" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pastExperience">Any past experiences?</label>
+                <textarea id="pastExperience" name="pastExperience" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Are you above the age of 13?</label>
+                <input type="radio" id="ageYes" name="age" value="Yes" required> <label for="ageYes">Yes</label>
+                <input type="radio" id="ageNo" name="age" value="No" required> <label for="ageNo">No</label>
+            </div>
+            <button type="button" onclick="submitApplication()">Submit Application</button>
+        </form>
+        <div id="formStatus" class="form-status"></div>
     </div>
 
-</body>
+    <script>
+        async function submitApplication() {
+            const form = document.getElementById('applicationForm');
+            const statusDiv = document.getElementById('formStatus');
 
+            if (form.checkValidity()) {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Webhook URL
+                const webhookURL = 'https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md';
+
+                try {
+                    const response = await fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: `**SWAT Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining SWAT:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
+                        })
+                    });
+
+                    if (response.ok) {
+                        statusDiv.textContent = 'Your application has been submitted successfully!';
+                        statusDiv.className = 'form-status success';
+                        form.reset();
+                    } else {
+                        statusDiv.textContent = 'There was a problem submitting your application. Please try again.';
+                        statusDiv.className = 'form-status error';
+                    }
+                } catch (error) {
+                    statusDiv.textContent = 'There was an error with the submission. Please try again.';
+                    statusDiv.className = 'form-status error';
+                }
+
+                statusDiv.style.display = 'block';
+            } else {
+                statusDiv.textContent = 'Please fill out all required fields.';
+                statusDiv.className = 'form-status error';
+                statusDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
 </html>
