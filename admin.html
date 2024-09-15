@@ -41,13 +41,65 @@
             background-color: #444;
             color: #e0e0e0;
         }
+        .status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Control Panel</h1>
         <button onclick="window.location.href='https://nationalsacademy.github.io/applications/'" class="go-back">Go Back</button>
-        <button onclick="window.location.href='applications.html'">Go to Applications</button>
+
+        <h2>Manage Applications</h2>
+        <div id="applicationControls">
+            <div>
+                <h3>SWAT Applications</h3>
+                <button id="toggleSwat" onclick="toggleApplication('swat')">Open</button>
+                <div id="swatStatus" class="status">Closed</div>
+            </div>
+            <div>
+                <h3>Headquarter Applications</h3>
+                <button id="toggleHq" onclick="toggleApplication('hq')">Open</button>
+                <div id="hqStatus" class="status">Closed</div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Default application status
+        let applicationsStatus = {
+            swat: 'closed',
+            hq: 'closed'
+        };
+
+        // Function to toggle application status
+        function toggleApplication(type) {
+            applicationsStatus[type] = applicationsStatus[type] === 'closed' ? 'open' : 'closed';
+            document.getElementById(`${type}Status`).textContent = applicationsStatus[type].charAt(0).toUpperCase() + applicationsStatus[type].slice(1);
+            document.getElementById(`toggle${type.charAt(0).toUpperCase() + type.slice(1)}`).textContent = applicationsStatus[type].charAt(0).toUpperCase() + applicationsStatus[type].slice(1);
+        }
+
+        // Example of saving the application status to local storage (for demo purposes)
+        // In a real application, you would handle this with a backend service.
+        function saveStatus() {
+            localStorage.setItem('applicationsStatus', JSON.stringify(applicationsStatus));
+        }
+
+        // Function to load saved status from local storage
+        function loadStatus() {
+            const savedStatus = JSON.parse(localStorage.getItem('applicationsStatus'));
+            if (savedStatus) {
+                applicationsStatus = savedStatus;
+                document.getElementById('swatStatus').textContent = applicationsStatus.swat.charAt(0).toUpperCase() + applicationsStatus.swat.slice(1);
+                document.getElementById('hqStatus').textContent = applicationsStatus.hq.charAt(0).toUpperCase() + applicationsStatus.hq.slice(1);
+                document.getElementById('toggleSwat').textContent = applicationsStatus.swat.charAt(0).toUpperCase() + applicationsStatus.swat.slice(1);
+                document.getElementById('toggleHq').textContent = applicationsStatus.hq.charAt(0).toUpperCase() + applicationsStatus.hq.slice(1);
+            }
+        }
+
+        loadStatus(); // Load saved status on page load
+    </script>
 </body>
 </html>
