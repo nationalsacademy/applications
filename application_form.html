@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
         }
@@ -15,13 +16,13 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background: white;
+            background: #2c2c2c;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         h1 {
+            color: #e0e0e0;
             text-align: center;
-            color: #333;
         }
         .form-group {
             margin-bottom: 15px;
@@ -35,19 +36,22 @@
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             border-radius: 4px;
+            background: #333;
+            color: #e0e0e0;
         }
         button {
             display: block;
             width: 100%;
             padding: 10px;
             background-color: #007bff;
-            color: white;
+            color: #e0e0e0;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -59,14 +63,14 @@
             font-weight: bold;
         }
         .form-status.success {
-            color: green;
+            color: #4dff4d;
         }
         .form-status.error {
-            color: red;
+            color: #ff4d4d;
         }
         .go-back {
-            background-color: #ccc;
-            color: black;
+            background-color: #444;
+            color: #e0e0e0;
             margin-top: 20px;
         }
     </style>
@@ -84,7 +88,7 @@
                 <input type="text" id="discordUsername" name="discordUsername" required>
             </div>
             <div class="form-group">
-                <label for="reason">Why do you want to join?</label>
+                <label for="reason">Why do you want to join SWAT?</label>
                 <textarea id="reason" name="reason" rows="4" required></textarea>
             </div>
             <div class="form-group">
@@ -97,30 +101,20 @@
                 <input type="radio" id="ageNo" name="age" value="No" required> <label for="ageNo">No</label>
             </div>
             <button type="button" onclick="submitApplication()">Submit Application</button>
-            <button type="button" class="go-back" onclick="goBack()">Go Back</button>
+            <button class="go-back" onclick="goBack()">Go Back</button>
         </form>
         <div id="formStatus" class="form-status"></div>
     </div>
 
     <script>
-        function getApplicationType() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('app');
-        }
-
-        function goBack() {
-            window.location.href = 'applications.html';
-        }
-
         async function submitApplication() {
             const form = document.getElementById('applicationForm');
             const statusDiv = document.getElementById('formStatus');
-            const appType = getApplicationType();
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-
+                
                 // Webhook URL
                 const webhookURL = 'https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md';
 
@@ -131,7 +125,7 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            content: `**${appType.toUpperCase()} Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
+                            content: `**SWAT Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining SWAT:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
                         })
                     });
 
@@ -140,20 +134,20 @@
                         statusDiv.className = 'form-status success';
                         form.reset();
                     } else {
-                        statusDiv.textContent = 'There was a problem submitting your application. Please try again.';
-                        statusDiv.className = 'form-status error';
+                        throw new Error('Failed to submit application.');
                     }
                 } catch (error) {
-                    statusDiv.textContent = 'There was an error with the submission. Please try again.';
+                    statusDiv.textContent = 'There was an error submitting your application.';
                     statusDiv.className = 'form-status error';
                 }
-
-                statusDiv.style.display = 'block';
             } else {
                 statusDiv.textContent = 'Please fill out all required fields.';
                 statusDiv.className = 'form-status error';
-                statusDiv.style.display = 'block';
             }
+        }
+
+        function goBack() {
+            window.location.href = 'applications.html';
         }
     </script>
 </body>
