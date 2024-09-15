@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Form</title>
+    <title>Application Questions</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,8 +21,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
         h1 {
-            color: #e0e0e0;
             text-align: center;
+            color: #e0e0e0;
         }
         .form-group {
             margin-bottom: 15px;
@@ -36,22 +36,19 @@
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #444;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            background: #333;
-            color: #e0e0e0;
         }
         button {
             display: block;
             width: 100%;
             padding: 10px;
             background-color: #007bff;
-            color: #e0e0e0;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -63,14 +60,10 @@
             font-weight: bold;
         }
         .form-status.success {
-            color: #4dff4d;
+            color: green;
         }
         .form-status.error {
-            color: #ff4d4d;
-        }
-        .go-back {
-            background-color: #444;
-            color: #e0e0e0;
+            color: red;
         }
     </style>
 </head>
@@ -87,7 +80,7 @@
                 <input type="text" id="discordUsername" name="discordUsername" required>
             </div>
             <div class="form-group">
-                <label for="reason">Why do you want to join SWAT?</label>
+                <label for="reason">Why do you want to join?</label>
                 <textarea id="reason" name="reason" rows="4" required></textarea>
             </div>
             <div class="form-group">
@@ -100,9 +93,9 @@
                 <input type="radio" id="ageNo" name="age" value="No" required> <label for="ageNo">No</label>
             </div>
             <button type="button" onclick="submitApplication()">Submit Application</button>
-            <button type="button" class="go-back" onclick="goBack()">Go Back</button>
         </form>
         <div id="formStatus" class="form-status"></div>
+        <button onclick="window.location.href='applications.html'">Go Back</button>
     </div>
 
     <script>
@@ -115,7 +108,7 @@
                 const data = Object.fromEntries(formData.entries());
 
                 // Webhook URL
-                const webhookURL = 'https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md';
+                const webhookURL = 'https://discord.com/api/webhooks/YOUR_WEBHOOK_URL_HERE';
 
                 try {
                     const response = await fetch(webhookURL, {
@@ -124,7 +117,7 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            content: `**SWAT Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining SWAT:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
+                            content: `**Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
                         })
                     });
 
@@ -133,22 +126,20 @@
                         statusDiv.className = 'form-status success';
                         form.reset();
                     } else {
-                        throw new Error('Failed to submit application.');
+                        statusDiv.textContent = 'There was a problem submitting your application. Please try again.';
+                        statusDiv.className = 'form-status error';
                     }
                 } catch (error) {
-                    statusDiv.textContent = 'There was an error submitting your application.';
+                    statusDiv.textContent = 'There was an error with the submission. Please try again.';
                     statusDiv.className = 'form-status error';
                 }
+
+                statusDiv.style.display = 'block';
             } else {
                 statusDiv.textContent = 'Please fill out all required fields.';
                 statusDiv.className = 'form-status error';
+                statusDiv.style.display = 'block';
             }
-
-            statusDiv.style.display = 'block';
-        }
-
-        function goBack() {
-            window.location.href = 'applications.html';
         }
     </script>
 </body>
