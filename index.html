@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Selection</title>
+    <title>Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,35 +12,22 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 400px;
+            margin: 100px auto;
             padding: 20px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
             text-align: center;
-            color: #333;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="email"], textarea {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
         button {
-            display: block;
-            width: 100%;
             padding: 10px;
             background-color: #007bff;
             color: white;
@@ -52,149 +39,30 @@
         button:hover {
             background-color: #0056b3;
         }
-        .form-status {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        .form-status.success {
-            color: green;
-        }
-        .form-status.error {
-            color: red;
-        }
-        .application-options {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .application-option {
-            display: inline-block;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .application-option.closed {
-            background-color: gray;
-            cursor: not-allowed;
-        }
-        .application-option.open {
-            background-color: #007bff;
-        }
-        .application-option.closed:hover {
-            background-color: gray;
-        }
-        .application-option.open:hover {
-            background-color: #0056b3;
-        }
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Application Portal</h1>
-        <div class="application-options" id="applicationOptions">
-            <div class="application-option open" onclick="openApplication('swat')">SWAT Applications (Open)</div>
-            <div class="application-option open" onclick="applicationOpen()">Headquarter Applications (Open)</div>
-        </div>
-
-        <form id="applicationForm" class="hidden">
-            <div class="form-group">
-                <label for="robloxUsername">What is your Roblox username?</label>
-                <input type="text" id="robloxUsername" name="robloxUsername" required>
-            </div>
-            <div class="form-group">
-                <label for="discordUsername">What is your Discord username?</label>
-                <input type="text" id="discordUsername" name="discordUsername" required>
-            </div>
-            <div class="form-group">
-                <label for="reason">Why do you want to join SWAT?</label>
-                <textarea id="reason" name="reason" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="pastExperience">Any past experiences?</label>
-                <textarea id="pastExperience" name="pastExperience" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>Are you above the age of 13?</label>
-                <input type="radio" id="ageYes" name="age" value="Yes" required> <label for="ageYes">Yes</label>
-                <input type="radio" id="ageNo" name="age" value="No" required> <label for="ageNo">No</label>
-            </div>
-            <button type="button" onclick="submitApplication()">Submit Application</button>
+        <h1>Admin Login</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="button" onclick="login()">Login</button>
         </form>
-
-        <div id="formStatus" class="form-status"></div>
+        <div id="loginStatus" style="color: red; margin-top: 10px;"></div>
     </div>
 
     <script>
-        function openApplication(applicationType) {
-            // Hide application options and show the application form
-            document.getElementById('applicationOptions').classList.add('hidden');
-            document.getElementById('applicationForm').classList.remove('hidden');
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginStatus = document.getElementById('loginStatus');
 
-            if (applicationType === 'swat') {
-                document.querySelector('h1').textContent = 'SWAT Application';
-            } else if (applicationType === 'hq') {
-                document.querySelector('h1').textContent = 'Headquarter Application';
-            }
-        }
-
-        function applicationClosed() {
-            // Show an alert and allow the user to go back
-            alert("Application Closed!");
-        }
-
-        function goBack() {
-            // Show application options and hide the application form
-            document.getElementById('applicationOptions').classList.remove('hidden');
-            document.getElementById('applicationForm').classList.add('hidden');
-        }
-
-        async function submitApplication() {
-            const form = document.getElementById('applicationForm');
-            const statusDiv = document.getElementById('formStatus');
-
-            if (form.checkValidity()) {
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                
-                // Webhook URL
-                const webhookURL = 'https://discord.com/api/webhooks/1283073106742607913/gybabaNmX3zM_66LOnWs-LOfMWs4Ofd3rt7Y-kzRDn1Gt2JgbwqZQxodbovwxiw6S9md';
-
-                try {
-                    const response = await fetch(webhookURL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            content: `**SWAT Application Received**\n**Roblox Username:** ${data.robloxUsername}\n**Discord Username:** ${data.discordUsername}\n**Reason for Joining SWAT:** ${data.reason}\n**Past Experiences:** ${data.pastExperience}\n**Age Above 13:** ${data.age}`
-                        })
-                    });
-
-                    if (response.ok) {
-                        statusDiv.textContent = 'Your application has been submitted successfully!';
-                        statusDiv.className = 'form-status success';
-                        form.reset();
-                    } else {
-                        statusDiv.textContent = 'There was a problem submitting your application. Please try again.';
-                        statusDiv.className = 'form-status error';
-                    }
-                } catch (error) {
-                    statusDiv.textContent = 'There was an error with the submission. Please try again.';
-                    statusDiv.className = 'form-status error';
-                }
-
-                statusDiv.style.display = 'block';
+            if (username === "Zembuso" && password === "adminlogin") {
+                // Redirect to control panel if login is successful
+                window.location.href = 'admin.html';
             } else {
-                statusDiv.textContent = 'Please fill out all required fields.';
-                statusDiv.className = 'form-status error';
-                statusDiv.style.display = 'block';
+                loginStatus.textContent = "Invalid username or password!";
             }
         }
     </script>
