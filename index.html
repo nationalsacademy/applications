@@ -85,6 +85,14 @@
     </div>
 
     <script>
+        // Define your users here
+        const users = [
+            { username: 'Zembuso', password: 'Mx0XD486Q2Xzr6O' },
+            { username: 'jj_funny1234', password: 'rJCIJUc7FE30OhD' },
+            { username: 'IllusionMadness', password: 'GAuE89JDFWF9fiB' },
+            // Add more users as needed
+        ];
+
         function showLogin() {
             document.getElementById('loginContainer').style.display = 'block';
         }
@@ -94,7 +102,9 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            if (username === 'Zembuso' && password === 'adminlogin') {
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
                 window.location.href = 'admin.html';
             } else {
                 document.getElementById('loginStatus').textContent = 'Invalid username or password.';
