@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SWAT Application</title>
+    <title>Application Selection</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,12 +64,46 @@
         .form-status.error {
             color: red;
         }
+        .application-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .application-option {
+            display: inline-block;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .application-option.closed {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        .application-option.open {
+            background-color: #007bff;
+        }
+        .application-option.closed:hover {
+            background-color: gray;
+        }
+        .application-option.open:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>SWAT Application</h1>
-        <form id="applicationForm">
+        <h1>Application Portal</h1>
+        <div class="application-options" id="applicationOptions">
+            <div class="application-option open" onclick="openApplication('swat')">SWAT Applications (Open)</div>
+            <div class="application-option closed" onclick="applicationClosed()">Headquarter Applications (Closed)</div>
+        </div>
+
+        <form id="applicationForm" class="hidden">
             <div class="form-group">
                 <label for="robloxUsername">What is your Roblox username?</label>
                 <input type="text" id="robloxUsername" name="robloxUsername" required>
@@ -93,10 +127,34 @@
             </div>
             <button type="button" onclick="submitApplication()">Submit Application</button>
         </form>
+
         <div id="formStatus" class="form-status"></div>
     </div>
 
     <script>
+        function openApplication(applicationType) {
+            // Hide application options and show the application form
+            document.getElementById('applicationOptions').classList.add('hidden');
+            document.getElementById('applicationForm').classList.remove('hidden');
+
+            if (applicationType === 'swat') {
+                document.querySelector('h1').textContent = 'SWAT Application';
+            } else if (applicationType === 'hq') {
+                document.querySelector('h1').textContent = 'Headquarter Application';
+            }
+        }
+
+        function applicationClosed() {
+            // Show an alert and allow the user to go back
+            alert("Application Closed!");
+        }
+
+        function goBack() {
+            // Show application options and hide the application form
+            document.getElementById('applicationOptions').classList.remove('hidden');
+            document.getElementById('applicationForm').classList.add('hidden');
+        }
+
         async function submitApplication() {
             const form = document.getElementById('applicationForm');
             const statusDiv = document.getElementById('formStatus');
